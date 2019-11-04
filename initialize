@@ -24,6 +24,7 @@ django-admin startapp $(echo $package_name | sed -e s,-,_,g)
 echo "Project initialized..."
 echo "Tip: recursive-include package/templates * for MANIFEST.in"
 
+rm initialize
 git add *
 git commit -m "Overwrite template settings, initialize project"
 git push origin master 
