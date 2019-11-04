@@ -26,5 +26,6 @@ echo "Tip: recursive-include package/templates * for MANIFEST.in"
 
 rm initialize
 git add *
+git rm initialize
 git commit -m "Overwrite template settings, initialize project"
 git push origin master 
