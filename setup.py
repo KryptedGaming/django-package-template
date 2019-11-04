@@ -18,7 +18,7 @@ setup(
     long_description_content_type='text/markdown',
     url='REPLACE_URL',
     author='REPLACE_AUTHOR',
-    author_email='REPLACE_EMAIL,
+    author_email='REPLACE_EMAIL',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
