@@ -7,18 +7,19 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+settings = __import__('django_package_template')
 setup(
-    name='REPLACE_NAME',
-    version='1.0.0',
+    name=settings.__package_name__,
+    version=settings.__version__,
     packages=find_packages(),
     include_package_data=True,
-    license='MIT License',
-    description='A simple Django package.',
+    license=settings.__license__,
+    description=settings.__description__,
     long_description=README,
     long_description_content_type='text/markdown',
-    url='REPLACE_URL',
-    author='REPLACE_AUTHOR',
-    author_email='REPLACE_EMAIL',
+    url=settings.__github_url__,
+    author=settings.__author__,
+    author_email=settings.__author_email__,
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
