@@ -45,6 +45,10 @@ create_project = subprocess.run(
     stdout=subprocess.PIPE,
     shell=True)
 
+if create_project.returncode != 0 and create_project.returncode != 1:
+    print(f"Failed to create Django application: RC={create_project.returncode}")
+    exit()
+
 # Build Files
 
 init_py = (
@@ -61,10 +65,6 @@ init_py = (
 )
 
 with fileinput.FileInput("./setup.py", inplace=True) as file:
-    for line in file:
-        print(line.replace('unknown_app', app_name), end='')
-
-with fileinput.FileInput("./.travis.yml", inplace=True) as file:
     for line in file:
         print(line.replace('django_package_template', app_name), end='')
 
