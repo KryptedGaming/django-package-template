@@ -1,0 +1,19 @@
+# Information
+site_name: 'Django Package'
+site_description: 'A Django package using the Krypted Gaming Template'
+site_url: 'https://github.com/KryptedGaming/django-package-template'
+
+# Repository
+repo_name: 'KryptedGaming/django-package-template'
+repo_url: 'https://github.com/KryptedGaming/django-package-template'
+
+# Theme Configuration
+theme:
+    name: 'material'
+    palette:
+        primary: 'blue'
+        accent: 'white'
+
+# Navigation 
+nav:
+    - Overview: index.md
