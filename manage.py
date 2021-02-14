@@ -10,7 +10,10 @@ manager = Manager()
 example_files = [
     '.travis.yml',
     'setup.py',
-    'mkdocs.yml'
+    'mkdocs.yml',
+    'tox.ini',
+    'MANIFEST.in',
+    '.coveragerc'
 ]
 
 get_package_name = subprocess.run(
@@ -51,11 +54,30 @@ def commands_succeeded(rcs):
 
 @manager.command
 def echo():
+    """Echo package directory."""
     print(dir_path)
 
 
 @manager.command
+def deploy():
+    """Deploy package and docs. Type in username and password for PyPi."""
+    commands = [
+        "python3 setup.py sdist",
+        "python3 -m twine upload dist/*",
+        "python3 -m mkdocs gh-deploy"
+    ]
+    command_rcs = set()
+    for command in commands:
+        print(command)
+        command_rcs.add(subprocess.run(
+            [command],
+            stdout=subprocess.PIPE,
+            shell=True).returncode)
+
+
+@manager.command
 def venv():
+    """Create a virtual environment."""
     command_rc = subprocess.run(
         [f"python3 -m venv {dir_path}/venv"],
         stdout=subprocess.PIPE,
@@ -66,8 +88,9 @@ def venv():
         exit()
 
 
-@manager.command
-def initialize():
+@ manager.command
+def init():
+    """Initialize the project."""
     # Create application
     create_project = subprocess.run(
         [f"django-admin startapp {app_name}"],
@@ -125,8 +148,26 @@ def initialize():
     print("Successfully initialized project")
 
 
-@manager.command
-def scorched_earth():
+@ manager.command 
+def prune():
+    """Prune all .example files. WARNING: Init will no longer function."""
+    for example_files in example_files:
+        command_rcs = set()
+        command = f'rm -rf {dir_path}/{example_file}.example'
+        print(command)
+
+        command_rcs.add(subprocess.run(
+            [command],
+            stdout=subprocess.PIPE,
+            shell=True
+        ).returncode)
+        if not commands_succeeded(command_rcs):
+            print("Failed to clear files")
+            exit()
+
+@ manager.command
+def purge():
+    """Purge all created files."""
     for example_file in example_files:
         command_rcs = set()
         command = f'rm -rf {dir_path}/{example_file}'
@@ -152,16 +193,29 @@ def scorched_earth():
         print("Failed to clear files")
         exit()
 
-    command = f'rm -rf {dir_path}/venv'
-    print(command)
-    command_rcs.add(subprocess.run(
-        [command],
-        stdout=subprocess.PIPE,
-        shell=True
-    ).returncode)
-    if not commands_succeeded(command_rcs):
-        print("Failed to clear files")
-        exit()
+    extra_files = [
+        'coverage.xml',
+        'dist',
+        '.coverage',
+        '*.egg-info',
+        'site',
+        '.tox',
+        'venv'
+    ]
+    
+    for example_file in extra_files:
+        command_rcs = set()
+        command = f'rm -rf {dir_path}/{example_file}'
+        print(command)
+
+        command_rcs.add(subprocess.run(
+            [command],
+            stdout=subprocess.PIPE,
+            shell=True
+        ).returncode)
+        if not commands_succeeded(command_rcs):
+            print("Failed to clear files")
+            exit()
 
 
 if __name__ == '__main__':

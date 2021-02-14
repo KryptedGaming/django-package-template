@@ -1,29 +1,14 @@
-dist: xenial
 language: python
-
-python:
-- "3.6"
-
-services:
-  - docker 
-
-before_install:
-- export DJANGO_SETTINGS_MODULE=app.settings
-- export EXTENSIONS=unknown_app
-
+sudo: false
+cache: pip
+dist: xenial
 install:
-- pip install -e django_package_template
-- django-admin startproject app 
-- cp conf/settings.py app/app/settings.py
-- pip3 install coverage python-coveralls sphinx-markdown-tables django-extensions ipython notebook
-- cd app/
-- python3 manage.py migrate
-- cd ../
-
-
-jobs:
+  - pip install coveralls>=1.1 tox
+script:
+  - tox
+after_success:
+  coveralls
+matrix:
   include:
-    - stage: test
-      script:
-        - cd app/
-        - coverage run --omit=**/tests.py,./install/*,./launcher,**/wsgi.py,**/manage.py --source=. ./manage.py test django_package_template --noinput --settings=app.settings
+   - env: TOXENV=py36
+     python: '3.6.7'
