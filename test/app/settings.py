@@ -1,5 +1,8 @@
 import os
 
+# Celery configuration
+# CELERY_ALWAYS_EAGER = True  # Forces celery to run locally for testing
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

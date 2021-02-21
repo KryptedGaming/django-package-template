@@ -8,6 +8,12 @@ Template for creating packages.
 3. Clone your repository
 4. Run `initalize.py`
 
+# Important: Celery
+If working with Celery, you need to do three things. 
+1. Uncomment line 1 in `test/app/__init__.py`
+2. Uncomment line 4 in `test/app/settings.py`
+3. `cp test/app/celery.py.example test/app/celery.py`
+
 # Additional Recommendations
 1. Rewrite this `README.md`
 2. Generate a documentation folder `sphinx quickstart`
